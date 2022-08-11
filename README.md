@@ -28,7 +28,7 @@ This is a chat application built for mobile devices (both for iOS and Android) u
 - As a user, I want to be able to read my messages offline so I can reread conversations at any time.
 - As a user with a visual impairment, I want to use a chat app that is compatible with a screen reader so that I can engage with a chat interface.
 
-<img src="../img/Start_screen.jpg" width=50% height=50%>
+<img src="img/Start_screen.jpg" width=50% height=50%>
 
 ### Key Features
 
