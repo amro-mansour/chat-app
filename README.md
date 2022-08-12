@@ -31,6 +31,15 @@ This is a chat application built for mobile devices (both for iOS and Android) u
 <img src="./img/Start_screen.jpg" width=20%>
 <img src="./img/Chat_screen.jpg" width=20%>
 
+<div class="row">
+  <div class="column">
+    <img src="./img/Start_screen.jpg" width=20%>
+  </div>
+  <div class="column">
+    <img src="./img/Chat_screen.jpg" width=20%>
+  </div>
+</div>
+
 ### Key Features
 
 - The homepage gives users the option to enter their name and the background color of the chat screen.
