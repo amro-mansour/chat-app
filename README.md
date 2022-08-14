@@ -1,4 +1,4 @@
-# meet app
+# Mobile Chat App
 
 ## Project description
 
