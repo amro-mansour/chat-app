@@ -3,6 +3,8 @@ import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo from '@react-native-community/netinfo';
+import CustomActions from './CustomActions';
+import MapView from 'react-native-maps';
 
 // Importing Firestore 
 const firebase = require('firebase');
@@ -71,9 +73,11 @@ export default class Chat extends React.Component {
   }
 
   componentDidMount() {
+    // Setting the name as the title of the Chat screen
     let name = this.props.route.params.name;
     this.props.navigation.setOptions({ title: name });
 
+    // This checks if the user is online or offline 
     NetInfo.fetch().then(connection => {
       if (connection.isConnected) {
         this.setState({
@@ -133,6 +137,8 @@ export default class Chat extends React.Component {
           _id: data.user._id,
           name: data.user.name,
         },
+        image: data.image || null,
+        location: data.location || null,
       });
     });
     this.setState({
@@ -140,16 +146,21 @@ export default class Chat extends React.Component {
     });
   };
 
+  // Add messages to Firebase db 
   addMessages(message) {
     this.referenceChatMessages.add({
+      uid: this.state.uid,
       _id: message._id,
       text: message.text || '',
       createdAt: message.createdAt,
       user: message.user,
-      uid: this.state.uid,
+      image: message.image || null,
+      location: message.location || null,
+
     });
   }
 
+  // Add message to the state 
   onSend(messages = []) {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
@@ -178,6 +189,7 @@ export default class Chat extends React.Component {
     );
   }
 
+  // This function is used to not render the input field if offline
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
@@ -189,13 +201,38 @@ export default class Chat extends React.Component {
     }
   }
 
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
+
+  renderCustomView(props) {
+    const { currentMessage } = props;
+    if (currentMessage.location) {
+      return (
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
+      );
+    }
+    return null;
+  }
+
   render() {
     let { backGroundColor } = this.props.route.params;
+
     return (
       <View style={{ flex: 1, backgroundColor: backGroundColor }}>
         <GiftedChat
           renderBubble={this.renderBubble.bind(this)}
           renderInputToolbar={this.renderInputToolbar.bind(this)}
+          renderActions={this.renderCustomActions.bind(this)}
+          renderCustomView={this.renderCustomView}
           messages={this.state.messages}
           onSend={messages => this.onSend(messages)}
           user={{ _id: this.state.user._id, name: this.state.user.name }}
