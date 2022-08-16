@@ -20,7 +20,7 @@ export default class Start extends React.Component {
     green: '#B9C6AE',
   };
 
-  // This function is used to change the background color state for the chat screen
+  // This function is used to change the background color state of the chat screen
   changebackGroundColor = (color) =>
     this.setState({ backGroundColor: color });
 
@@ -70,7 +70,7 @@ export default class Start extends React.Component {
               ></TouchableOpacity>
             </View>
 
-            {/* This button once pressed, the user will be redirected to the "Chat" screen */}
+            {/* This button once pressed, will redirect the user to the Chat screen */}
             <Pressable
               style={styles.button}
               onPress={() =>
